@@ -1,0 +1,113 @@
+SELECT name FROM sys.tables;
+--- 1. CHECK DATA
+SELECT TOP 10 * 
+FROM dbo.fact_loan_applications;
+
+SELECT TOP 10 * 
+FROM dbo.fact_loan_payments;
+
+--- 2. LOAN ISSUED
+-- How much money did we lend?
+SELECT 
+    SUM(loan_amount) AS total_loan
+FROM dbo.fact_loan_applications;
+
+ --- 3. TOTAL PAYMENTS RECEIVED
+ SELECT 
+    SUM(amount_paid) AS total_paid
+FROM dbo.fact_loan_payments;
+
+ ---- 4. OUTSTANDING LOAN
+ SELECT 
+    loan_id,
+    SUM(amount_paid) AS total_paid
+FROM dbo.fact_loan_payments
+GROUP BY loan_id;
+
+ --- FINAL KPI
+ SELECT 
+    SUM(a.loan_amount) AS total_loans,
+    SUM(p.total_paid) AS total_paid,
+    SUM(a.loan_amount) - SUM(p.total_paid) AS outstanding
+FROM dbo.fact_loan_applications a
+LEFT JOIN (
+    SELECT loan_id, SUM(amount_paid) AS total_paid
+    FROM dbo.fact_loan_payments
+    GROUP BY loan_id
+) p 
+ON a.loan_id = p.loan_id;
+
+--- 5.DEFAULT RATE
+SELECT 
+    COUNT(CASE WHEN default_flag = 1 THEN 1 END) * 1.0 
+    / COUNT(*) AS default_rate
+FROM dbo.fact_loan_applications;
+
+--- 6. LOANS BY REGION
+SELECT 
+    r.region_name,
+    SUM(a.loan_amount) AS total_loans
+FROM dbo.fact_loan_applications a
+JOIN dbo.dim_region r 
+    ON a.region_id = r.region_id
+GROUP BY r.region_name
+ORDER BY total_loans DESC;
+
+--- 7.TOP CUSTOMERS
+SELECT 
+    c.first_name,
+    c.last_name,
+    SUM(a.loan_amount) AS total_loan
+FROM dbo.fact_loan_applications a
+JOIN dbo.dim_customers c 
+    ON a.customer_id = c.customer_id
+GROUP BY c.first_name, c.last_name
+ORDER BY total_loan DESC;
+
+--- 8. LOAN STATUS DISTRIBUTION
+SELECT 
+    loan_status,
+    COUNT(*) AS loan_count
+FROM dbo.fact_loan_applications
+GROUP BY loan_status
+ORDER BY loan_count DESC;
+
+--- 9. LOAN PURPOSE ANALYSIS
+SELECT 
+    loan_purpose,
+    SUM(loan_amount) AS total_loan
+FROM dbo.fact_loan_applications
+GROUP BY loan_purpose
+ORDER BY total_loan DESC;
+
+---10.DEFAULT RATE BY REGION
+SELECT 
+    r.region_name,
+    COUNT(CASE WHEN a.default_flag = 1 THEN 1 END) * 1.0 
+        / COUNT(*) AS default_rate
+FROM dbo.fact_loan_applications a
+JOIN dbo.dim_region r
+    ON a.region_id = r.region_id
+GROUP BY r.region_name
+ORDER BY default_rate DESC;
+
+---11.YEARLY LOAN TREND
+SELECT 
+    d.year,
+    SUM(a.loan_amount) AS total_loan
+FROM dbo.fact_loan_applications a
+JOIN dbo.dim_date d
+    ON a.date_id = d.date_id
+GROUP BY d.year
+ORDER BY d.year;
+
+---12. TOP 10 CUSTOMERS
+SELECT TOP 10
+    c.first_name,
+    c.last_name,
+    SUM(a.loan_amount) AS total_loan
+FROM dbo.fact_loan_applications a
+JOIN dbo.dim_customers c
+    ON a.customer_id = c.customer_id
+GROUP BY c.first_name, c.last_name
+ORDER BY total_loan DESC;
