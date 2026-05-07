@@ -120,7 +120,7 @@ The project follows a Star Schema model using:
 
 ## Star Schema
 
-![Star Schema](star-schema.png)
+![Star Schema](star schema.png)
 
 
 
