@@ -114,7 +114,13 @@ The project follows a Star Schema model using:
 
 
 
-(Add your dashboard screenshots here after upload)
+## Dashboard Preview
+
+![Dashboard](dashboard-overview.png)
+
+## Star Schema
+
+![Star Schema](star-schema.png)
 
 
 
