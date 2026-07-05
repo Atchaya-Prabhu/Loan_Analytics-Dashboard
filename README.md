@@ -5,12 +5,7 @@
 **## 📌 Project Overview**
 
 
-
-This project is an end-to-end Business Intelligence solution built using SQL Server and Power BI to analyze loan portfolio performance, customer trends, regional loan distribution, and default analysis.
-
-
-
-The dashboard provides executive-level insights through interactive visuals, KPI tracking, and dynamic business insights.
+This repository showcases an end-to-end Business Intelligence solution built using SQL Server and Power BI. It demonstrates data modeling, SQL analytics, DAX calculations, KPI reporting, and interactive dashboard development to deliver executive-level insights into loan portfolio performance, customer behavior, regional lending trends, and default risk..
 
 
 
