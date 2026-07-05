@@ -1,6 +1,6 @@
 **# Loan Portfolio Analytics Dashboard**
 
-
+This repository showcases an end-to-end Business Intelligence solution built using SQL Server and Power BI. It demonstrates data modeling, SQL analytics, DAX calculations, KPI reporting, and interactive dashboard development to deliver executive-level insights into loan portfolio performance, customer behavior, regional lending trends, and default risk..
 
 **## 📌 Project Overview**
 
